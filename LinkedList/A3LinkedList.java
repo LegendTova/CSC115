@@ -1,0 +1,155 @@
+// Name: Tyson Chan
+// Student number: v00985911
+
+public class A3LinkedList implements A3List {
+	private A3Node head;
+	private A3Node tail;
+	private int length;
+	
+	public A3LinkedList() {
+		head = null;
+		tail = null;
+		length = 0;
+	}
+	
+	public void addFront(String s) {
+		A3Node n = new A3Node(s);
+		if(head == null){
+			head = n;
+			tail = n;
+		}else{
+			head.setPrev(n);
+			n.setNext(head);
+			head = n;
+		}
+		length++;
+	}
+
+	public void addBack(String s) {
+		A3Node n = new A3Node(s);
+		
+		if(tail == null){
+			tail = n;
+			head = n;
+		} else {
+			tail.setNext(n);
+			n.setPrev(tail);
+			tail = n;
+		}
+		length++;
+	}
+	
+	public int size() {
+		return length;
+	}
+	
+	public boolean isEmpty() {
+		return length==0;
+	}
+	
+	public void removeFront() {
+		if(head != null){
+			A3Node cur = head;
+			cur = cur.getNext();
+			if(cur != null){
+				cur.setPrev(null);
+			}else{
+				tail = cur;
+			}
+			head = cur;
+			length--;
+		}
+	}
+	
+	public void removeBack() {
+		if(tail != null){
+			A3Node cur = tail;
+			cur = cur.getPrev();
+			if(cur != null){
+				cur.setNext(null);
+			} else {
+				head = cur;
+			}
+			tail = cur;
+			length--;
+		}
+	}
+	
+	
+	public void rotate(int n) {
+		if(length <= n){
+			n -= length;
+		}
+		
+		A3Node cur = tail;
+		for(int i = 0;i < n;i++){
+			this.addFront(cur.getData());
+			cur = cur.getPrev();
+		}
+		cur.setNext(null);
+		tail = cur;	
+	}
+	
+	public void interleave(A3LinkedList other) {
+		A3LinkedList a = new A3LinkedList();
+		A3LinkedList b = new A3LinkedList();
+		A3Node aCur = this.head;
+		A3Node bCur = other.head;
+		
+		for(int i = 0;i < this.size();i++){
+			if(i % 2 == 0){
+				a.addBack(aCur.getData());
+				b.addBack(bCur.getData());
+			}else{
+				a.addBack(bCur.getData());
+				b.addBack(aCur.getData());
+			}
+			
+			
+			aCur = aCur.getNext();
+			bCur = bCur.getNext();
+		}
+		
+		this.head = a.head;
+		this.tail = a.tail;
+		this.length = a.length;
+		other.head = b.head;
+		other.tail = b.tail;
+		other.length = b.length;
+	}
+	
+	/*
+	 * Purpose: return a string representation of the list 
+	 *          when traversed from front to back
+	 * Parameters: none
+	 * Returns: nothing
+	 */
+	public String frontToBack() {
+		String result = "{";
+		A3Node cur = head;
+		while (cur != null) {
+			result += cur.getData();
+			cur = cur.next;
+		}
+		result += "}";
+		return result;
+	}
+	
+	/*
+	 * Purpose: return a string representation of the list 
+	 *          when traversed from back to front
+	 * Parameters: none
+	 * Returns: nothing
+	 */
+	public String backToFront() {
+		String result = "{";
+		A3Node cur = tail;
+		while (cur != null) {
+			result += cur.getData();
+			cur = cur.prev;
+		}
+		result += "}";
+		return result;
+	}
+}
+	

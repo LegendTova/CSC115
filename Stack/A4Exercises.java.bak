@@ -1,0 +1,79 @@
+public class A4Exercises {
+	/*
+	 * Purpose: determine if the stack of plates has been
+	 *          stacked correctly (ie. there is never a plate
+	 *          on top of a smaller plate)
+	 * Parameters: Stack<Plate> s - a stack of plates
+	 * Returns: boolean - true if the plates are stacked correctly
+	 *                    false otherwise
+	 * Post-condition: the contents of s are not modified
+	 */
+	public static boolean stackedCorrectly(Stack<Plate> s) {
+		A4Stack<Plate> temp = new A4Stack<Plate>();
+		boolean result = true;
+		int prev = 0;
+
+		while(!(s.isEmpty())){
+			Plate data = s.pop();
+			if(prev > data.getDiameter()){
+				result = false;
+				break;
+			}
+			temp.push(data);
+			prev = data.getDiameter();
+		}
+		
+		//A4Node<Plate> n = temp.start();
+		
+		/*while(n.getNext() != null){
+			if(n.getData().getDiameter() < n.getNext().getData().getDiameter()){
+				result = false;
+				break;
+			}
+			
+			n = n.getNext();
+		}*/
+		
+		while(!(temp.isEmpty())){
+			Plate data = temp.pop();
+			s.push(data);
+		}
+		
+		return result; // so it compiles
+	}
+	
+	/*
+	 * Purpose: insert p into the correct location in the
+	 *          stack such that there are no smaller plates 
+	 *          below p and no larger plates above p
+	 * Parameters: Stack<Plate> s - a stack of plates
+	 *             Plate p - the plate to insert into s
+	 * Returns: void - nothing
+	 * Pre-condition: plates in s have been stacked correctly
+	 */
+	public static void insertPlate(Stack<Plate> s, Plate p) {
+		Stack<Plate> temp = new A4Stack<Plate>();
+		int prev = 0;
+		boolean atEnd = true;
+		
+		while(!(s.isEmpty())){
+			Plate data = s.pop();
+			if(prev < p.getDiameter() && p.getDiameter() < data.getDiameter()){
+				temp.push(p);
+				atEnd = false;
+			}
+			temp.push(data);
+			prev = data.getDiameter();
+		}
+		
+		if(atEnd){
+			temp.push()p;
+		}
+		
+		while(!(temp.isEmpty())){
+			Plate data = temp.pop();
+			s.push(data);
+		}
+		
+	}
+}
